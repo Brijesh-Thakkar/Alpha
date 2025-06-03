@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // ✅ Added useNavigate
 
 interface FormData {
   firstName: string;
@@ -26,6 +26,8 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ openCartSlider }) => {
   });
 
   const [paymentMethod, setPaymentMethod] = useState<'online' | 'cod'>('online');
+
+  const navigate = useNavigate(); // ✅ Added
 
   const subtotal = getCartTotal();
   const shipping = 0;
@@ -55,7 +57,7 @@ const CheckoutPage: React.FC<CheckoutPageProps> = ({ openCartSlider }) => {
     }
 
     console.log('Order placed:', { formData, paymentMethod, cartItems });
-    alert('Order placed successfully!');
+    navigate('/order-status', { state: { formData, paymentMethod, cartItems, total } }); // ✅ Replaced alert
   };
 
   return (
